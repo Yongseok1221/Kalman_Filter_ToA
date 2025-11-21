@@ -28,9 +28,4 @@ flowchart TD
     
     AvgError --> End([종료])
     
-    style Start fill:#e1f5e1
-    style End fill:#ffe1e1
-    style KF fill:#e1e5ff
-    style Predict fill:#fff4e1
-    style Update fill:#fff4e1
 ```

@@ -49,7 +49,23 @@ flowchart LR
 ```
 
 
+## 초기화 상세
 
+```mermaid
+flowchart LR
+    InitStart([초기화 시작]) --> SetA[A = I_2]
+    SetA --> SetH[H 생성<br/>6x2 행렬]
+    SetH --> SetQ[Q 선택<br/>sigma에 따라]
+    SetQ --> SetEwk[Ewk 선택<br/>sigma에 따라]
+    SetEwk --> SetP[P 선택<br/>sigma에 따라]
+    SetP --> InitEnd([초기화 완료])
+    
+    style InitStart fill:#e1f5e1
+    style InitEnd fill:#e1f5e1
+    style SetQ fill:#e1e5ff
+    style SetEwk fill:#e1e5ff
+    style SetP fill:#e1e5ff
+```
 
 ## 시스템 모델
 

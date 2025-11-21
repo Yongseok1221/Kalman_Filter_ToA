@@ -10,8 +10,9 @@ flowchart TD
 
     Start((시작)) --> Init[변수 및 H 행렬 초기화]:::init
     Init --> OuterLoop{시뮬레이션\n10^4회 반복}:::loop
-    
+
     subgraph Simulation_Cycle [1회 시뮬레이션 과정]
+        direction TB
         OuterLoop --> InitTensor[위치 저장 텐서 Xk 초기화]
         InitTensor --> InnerLoop{시간 k = 0 ~ 10}:::loop
         
@@ -20,16 +21,16 @@ flowchart TD
         
         CalcZk --> CheckK{데이터 충분?\nk >= 2}:::decision
         
-        CheckK -- No (초기 단계) --> LS_Mode[ToA 최소자승법\nLeast Squares]:::process
+        CheckK -- No: 초기 단계 --> LS_Mode[ToA 최소자승법\nLeast Squares]:::process
         LS_Mode --> SavePos[위치 추정값 저장 & 에러 계산]
         
-        CheckK -- Yes (추적 단계) --> KF_Mode[[칼만 필터 호출\nkalmanFilter]]:::process
-        KF_Mode --> KF_Logic
-            subgraph KF_Internal [칼만 필터 내부 로직]
-                KF_Logic(매개변수 로드) --> Pred[Time Update: 예측\n등속 모델 가정]
-                Pred --> DynamicR[R 행렬 동적 계산\n거리 오차 반영]
-                DynamicR --> Correct[Measurement Update: 보정\nKalman Gain 계산]
-            end
+        CheckK -- Yes: 추적 단계 --> KF_Mode[[칼만 필터 호출\nkalmanFilter]]:::process
+        
+        %% 칼만 필터 내부 로직 표현
+        KF_Mode --> KF_Params(매개변수 로드)
+        KF_Params --> Pred[Time Update: 예측\n등속 모델 가정]
+        Pred --> DynamicR[R 행렬 동적 계산\n거리 오차 반영]
+        DynamicR --> Correct[Measurement Update: 보정\nKalman Gain 계산]
         Correct --> SavePos
     end
     
@@ -40,6 +41,6 @@ flowchart TD
     OuterLoop -- 반복 완료 --> FinalCalc[평균 에러 계산]:::result
     FinalCalc --> End((종료))
 
-    %% 링크 스타일
+    %% 링크 스타일 수정됨
     linkStyle default stroke-width:2px,fill:none,stroke:#333;
-    '''
+'''

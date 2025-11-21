@@ -1,46 +1,36 @@
 # Kalman_Filter_ToA
 '''mermaid
 flowchart TD
-    %% 스타일 정의
-    classDef init fill:#f9f,stroke:#333,stroke-width:2px,color:black;
-    classDef loop fill:#e1f5fe,stroke:#0277bd,stroke-width:2px,color:black;
-    classDef process fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:black;
-    classDef decision fill:#e0f2f1,stroke:#00695c,stroke-width:2px,color:black;
-    classDef result fill:#ffebee,stroke:#c62828,stroke-width:2px,color:black;
-
-    Start((시작)) --> Init[변수 및 H 행렬 초기화]:::init
-    Init --> OuterLoop{시뮬레이션\n10^4회 반복}:::loop
-
-    subgraph Simulation_Cycle [1회 시뮬레이션 과정]
-        direction TB
-        OuterLoop --> InitTensor[위치 저장 텐서 Xk 초기화]
-        InitTensor --> InnerLoop{시간 k = 0 ~ 10}:::loop
-        
-        InnerLoop --> GenData[실제 위치 이동 & 노이즈 추가된 거리 측정값 Z 생성]:::process
-        GenData --> CalcZk[선형화된 관측값 zk 계산\n제곱 차 이용]:::process
-        
-        CalcZk --> CheckK{데이터 충분?\nk >= 2}:::decision
-        
-        CheckK -- No: 초기 단계 --> LS_Mode[ToA 최소자승법\nLeast Squares]:::process
-        LS_Mode --> SavePos[위치 추정값 저장 & 에러 계산]
-        
-        CheckK -- Yes: 추적 단계 --> KF_Mode[[칼만 필터 호출\nkalmanFilter]]:::process
-        
-        %% 칼만 필터 내부 로직 표현
-        KF_Mode --> KF_Params(매개변수 로드)
-        KF_Params --> Pred[Time Update: 예측\n등속 모델 가정]
-        Pred --> DynamicR[R 행렬 동적 계산\n거리 오차 반영]
-        DynamicR --> Correct[Measurement Update: 보정\nKalman Gain 계산]
-        Correct --> SavePos
-    end
+    Start([시작]) --> Init[4개 앵커 배치<br/>정사각형 꼭짓점]
+    Init --> SimLoop{10,000회<br/>시뮬레이션}
     
-    SavePos --> InnerLoop
-    InnerLoop -- k 종료 --> AccError[에러 누적]:::process
-    AccError --> OuterLoop
+    SimLoop --> TimeLoop{시간 k=0→10<br/>물체 이동}
     
-    OuterLoop -- 반복 완료 --> FinalCalc[평균 에러 계산]:::result
-    FinalCalc --> End((종료))
-
-    %% 링크 스타일 수정됨
-    linkStyle default stroke-width:2px,fill:none,stroke:#333;
+    TimeLoop --> CalcDist[실제 거리 계산<br/>물체↔각 앵커]
+    CalcDist --> AddNoise[측정 노이즈 추가<br/>Z = 실제거리 + σ·randn]
+    AddNoise --> ToA[ToA 변환<br/>거리차의 제곱으로 선형화]
+    
+    ToA --> CheckK{k ≥ 2?}
+    
+    CheckK -->|No| LSE[최소자승법<br/>초기 위치 추정]
+    CheckK -->|Yes| KF[칼만 필터]
+    
+    KF --> Predict[예측 단계<br/>x_pred = Ax + 속도 + Ewk<br/>P_pred = APA' + Q]
+    Predict --> Update[추정 단계<br/>K = 칼만 게인 계산<br/>X_est = x_pred + K·잔차<br/>P = P_pred - KHP_pred]
+    
+    LSE --> CalcError[오차 계산<br/>√((x_est-x_real)² + (y_est-y_real)²)]
+    Update --> CalcError
+    
+    CalcError --> TimeLoop
+    
+    TimeLoop -->|k=10 완료| SimLoop
+    SimLoop -->|10,000회 완료| AvgError[평균 오차 계산<br/>총 오차 / 110,000]
+    
+    AvgError --> End([종료])
+    
+    style Start fill:#e1f5e1
+    style End fill:#ffe1e1
+    style KF fill:#e1e5ff
+    style Predict fill:#fff4e1
+    style Update fill:#fff4e1
 '''

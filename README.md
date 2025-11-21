@@ -12,7 +12,7 @@ flowchart TD
     
     ToA --> CheckK{k >= 2?}
     
-    CheckK -->|No| LSE[ToA_least squre]
+    CheckK -->|No| LSE[ToA_least square]
     CheckK -->|Yes| KF[칼만 필터]
     
     KF --> Predict[예측 단계]

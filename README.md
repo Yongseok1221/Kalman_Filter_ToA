@@ -30,7 +30,6 @@ flowchart LR
     
 ```
 
-## 칼만 필터 함수 흐름도
 
 ## 칼만 필터 함수 흐름도
 
@@ -47,11 +46,6 @@ flowchart LR
     Predict --> Update[추정 단계<br/>K, X_est, P]
     Update --> Return([X_est 반환])
     
-    style Start fill:#e1f5e1
-    style Return fill:#ffe1e1
-    style Init fill:#e1e5ff
-    style Predict fill:#ffe1f5
-    style Update fill:#f5e1ff
 ```
 
 ---
@@ -67,11 +61,7 @@ flowchart LR
     SetEwk --> SetP[P 선택<br/>sigma에 따라]
     SetP --> InitEnd([초기화 완료])
     
-    style InitStart fill:#e1f5e1
-    style InitEnd fill:#e1f5e1
-    style SetQ fill:#e1e5ff
-    style SetEwk fill:#e1e5ff
-    style SetP fill:#e1e5ff
+
 ```
 
 **초기화 수식:**
@@ -102,11 +92,7 @@ flowchart LR
     PredStart([예측 시작]) --> CalcXpred[x_pred = A*Xk +<br/>Xk-Xk_prev + Ewk]
     CalcXpred --> CalcPpred[P_pred = A*P*A' + Q]
     CalcPpred --> PredEnd([예측 완료])
-    
-    style PredStart fill:#e1f5e1
-    style PredEnd fill:#e1f5e1
-    style CalcXpred fill:#ffe1f5
-    style CalcPpred fill:#ffe1f5
+
 ```
 
 **예측 수식:**
@@ -126,11 +112,6 @@ flowchart LR
     CalcX --> CalcP[P = P_pred -<br/>K*H*P_pred]
     CalcP --> UpdateEnd([추정 완료])
     
-    style UpdateStart fill:#e1f5e1
-    style UpdateEnd fill:#e1f5e1
-    style CalcK fill:#f5e1ff
-    style CalcX fill:#f5e1ff
-    style CalcP fill:#f5e1ff
 ```
 
 **추정 수식:**
@@ -159,11 +140,7 @@ flowchart LR
     PredStart([예측 시작]) --> CalcXpred[x_pred = A*Xk +<br/>Xk-Xk_prev + Ewk]
     CalcXpred --> CalcPpred[P_pred = A*P*A' + Q]
     CalcPpred --> PredEnd([예측 완료])
-    
-    style PredStart fill:#e1f5e1
-    style PredEnd fill:#e1f5e1
-    style CalcXpred fill:#ffe1f5
-    style CalcPpred fill:#ffe1f5
+
 ```
 
 ---
@@ -177,11 +154,7 @@ flowchart LR
     CalcX --> CalcP[P = P_pred -<br/>K*H*P_pred]
     CalcP --> UpdateEnd([추정 완료])
     
-    style UpdateStart fill:#e1f5e1
-    style UpdateEnd fill:#e1f5e1
-    style CalcK fill:#f5e1ff
-    style CalcX fill:#f5e1ff
-    style CalcP fill:#f5e1ff
+
 ```
 
 ## 시스템 모델

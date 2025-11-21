@@ -29,6 +29,83 @@ flowchart LR
     AvgError --> End([종료])
     
 ```
+
+## 칼만 필터 함수 흐름도
+
+```mermaid
+flowchart LR
+    Start([함수 시작]) --> CheckFirst{첫 실행?}
+    
+    CheckFirst -->|Yes| Init[A, H, Q, P, Ewk<br/>초기화]
+    Init --> CalcR[R 계산]
+    
+    CheckFirst -->|No| CalcR
+    
+    CalcR --> Predict[예측 단계<br/>x_pred, P_pred]
+    Predict --> Update[추정 단계<br/>K, X_est, P]
+    Update --> Return([X_est 반환])
+    
+    style Start fill:#e1f5e1
+    style Return fill:#ffe1e1
+    style Init fill:#e1e5ff
+    style Predict fill:#ffe1f5
+    style Update fill:#f5e1ff
+```
+
+---
+
+## 초기화 상세
+
+```mermaid
+flowchart LR
+    InitStart([초기화 시작]) --> SetA[A = I_2]
+    SetA --> SetH[H 생성<br/>6x2 행렬]
+    SetH --> SetQ[Q 선택<br/>sigma에 따라]
+    SetQ --> SetEwk[Ewk 선택<br/>sigma에 따라]
+    SetEwk --> SetP[P 선택<br/>sigma에 따라]
+    SetP --> InitEnd([초기화 완료])
+    
+    style InitStart fill:#e1f5e1
+    style InitEnd fill:#e1f5e1
+    style SetQ fill:#e1e5ff
+    style SetEwk fill:#e1e5ff
+    style SetP fill:#e1e5ff
+```
+
+---
+
+## 예측 단계 상세
+
+```mermaid
+flowchart LR
+    PredStart([예측 시작]) --> CalcXpred[x_pred = A*Xk +<br/>Xk-Xk_prev + Ewk]
+    CalcXpred --> CalcPpred[P_pred = A*P*A' + Q]
+    CalcPpred --> PredEnd([예측 완료])
+    
+    style PredStart fill:#e1f5e1
+    style PredEnd fill:#e1f5e1
+    style CalcXpred fill:#ffe1f5
+    style CalcPpred fill:#ffe1f5
+```
+
+---
+
+## 추정 단계 상세
+
+```mermaid
+flowchart LR
+    UpdateStart([추정 시작]) --> CalcK[K = P_pred*H'*<br/>pinv H*P_pred*H'+R]
+    CalcK --> CalcX[X_est = x_pred +<br/>K* zk-H*x_pred]
+    CalcX --> CalcP[P = P_pred -<br/>K*H*P_pred]
+    CalcP --> UpdateEnd([추정 완료])
+    
+    style UpdateStart fill:#e1f5e1
+    style UpdateEnd fill:#e1f5e1
+    style CalcK fill:#f5e1ff
+    style CalcX fill:#f5e1ff
+    style CalcP fill:#f5e1ff
+```
+
 ## 시스템 모델
 
 ### 앵커 배치

@@ -45,11 +45,6 @@ flowchart LR
     Predict --> Update[추정 단계<br/>K, X_est, P]
     Update --> Return([X_est 반환])
     
-    style Start fill:#e1f5e1
-    style Return fill:#ffe1e1
-    style Init fill:#e1e5ff
-    style Predict fill:#ffe1f5
-    style Update fill:#f5e1ff
 ```
 
 ---
@@ -64,12 +59,7 @@ flowchart LR
     SetQ --> SetEwk[Ewk 선택<br/>sigma에 따라]
     SetEwk --> SetP[P 선택<br/>sigma에 따라]
     SetP --> InitEnd([초기화 완료])
-    
-    style InitStart fill:#e1f5e1
-    style InitEnd fill:#e1f5e1
-    style SetQ fill:#e1e5ff
-    style SetEwk fill:#e1e5ff
-    style SetP fill:#e1e5ff
+
 ```
 
 ---
